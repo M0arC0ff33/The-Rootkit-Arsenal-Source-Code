@@ -7,8 +7,8 @@
 #define WORD unsigned short
 
 #define IDT_001_ADDR 0 // start address of the first IVT vector
-#define IVT_255_ADDR 1020 // start address of the last IVT vector
-#define IVT_VECTOR_SZ 4 // size of each interrupt vector
+#define IDT_255_ADDR 1020 // start address of the last IVT vector
+#define IDT_VECTOR_SZ 4 // size of each interrupt vector
 
 #define BP __asm{ int 0x3 } // break point
 
@@ -27,9 +27,9 @@ void main()
 
     for
     (
-      address=IVT_001_ADDR; 
-      address<=IVT_255_ADDR; 
-      address=address+IVT_VECTOR_SZ,vector++
+      address=IDT_001_ADDR; 
+      address<=IDT_255_ADDR; 
+      address=address+IDT_VECTOR_SZ,vector++
     ) 
     {
         printf("%03d\t%08p\t", vector, address);
@@ -41,14 +41,14 @@ void main()
             MOV ES, AX 
             MOV BX, address 
             MOV AX, ES:[BX] 
-            MOV ip_addr, AX 
+            MOV ipAddr, AX 
             INC BX
             INC BX
             MOV AX, ES:[BX] 
-            mov cs_addr, AX 
+            mov csAddr, AX 
             POP ES 
         };
-        printf("[CS:IP]=[%04X,%04X]\n", cs_addr,ip_addr);
+        printf("[CS:IP]=[%04X,%04X]\n", csAddr,ipAddr);
     }
 
     printf("Press [ENTER] key to continue...");
@@ -63,9 +63,9 @@ void main()
     
     for
     (
-      address=IVT_255_ADDR; 
-      address>=IVT_001_ADDR; 
-      address=address-IVT_VECTOR_SZ,vector--
+      address=IDT_255_ADDR; 
+      address>=IDT_001_ADDR; 
+      address=address-IDT_VECTOR_SZ,vector--
     ) 
     {
         printf("Nulling %03d\t%08p\n", vector, address);
